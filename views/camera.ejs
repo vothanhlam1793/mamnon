@@ -1,0 +1,109 @@
+<html>
+
+<% include header %>
+
+<body>
+    <a href="/logout">Đăng xuất</a>
+    <div class="" id="app">
+        <div>KALA CAMERA</div>
+        <div class="row">
+            <!-- <div class="col-lg-4 col-md-4 well" v-for="id_video in idVideos">
+                <view-camera :id_video="id_video.id" :title_video="id_video.title">
+                </view-camera>
+
+            </div> -->
+            <div class="col-lg-4 col-md-4 well" v-for="camera in cameras">
+                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title">
+                </view-camera>
+            </div>
+        </div>
+        <!-- <div class="form-group">
+            <label for="usr">Chọn camera</label>
+            <select class="form-control" v-model="choice" style="max-width:100%;" v-on:change="change()">
+                <option v-for="uri in uris">{{uri.uri}}</option>
+            </select>
+        </div> -->
+        <div>
+            <button @click="start()">View</button>
+        </div>
+    </div>
+    <script src="/javascripts/video.js"></script>
+    <script type="text/javascript">
+        var Camera = Backbone.Model.extend({
+            urlRoot: "/cameras",
+            idAttribute: "_id"
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                uris: [],
+                choice: "",
+                urlss: window.location.origin + "/video?id=camera1",
+                idVideos: [{
+                    id: "black",
+                    title: "Lá 1"
+                }, {
+                    id: "blue",
+                    title: "Mầm 1"
+                }, {
+                    id: "green",
+                    title: "Chồi 2"
+                }],
+                user: {},
+                group: {},
+                cameras :[]
+            },
+            mounted: function () {
+            },
+            created() {
+                fetch("http://door.creta.work:8888/list").then((res) => {
+                    res.json().then((a) => {
+                        console.log(a);
+                        this.uris = a;
+                    })
+                })
+            },
+            methods: {
+                change: function () {
+                    var url = "http://door.creta.work:8888/stream/" + this.choice.split("/")[2] +
+                        "/index.m3u8";
+                    this.idVideos.forEach(function (ivideo) {
+                        video_hls(ivideo.id, url)
+                    })
+
+                },
+                start: function(){
+                    // var url = "http://door.creta.work:8888/stream/" + this.choice.split("/")[2] + "/index.m3u8";
+                    app.cameras.forEach(function(camera){
+                        video_hls(camera.attributes._id, "http://door.creta.work:8888/stream/" + camera.attributes.alias + "/index.m3u8");
+                    });
+                }
+            },
+            created: function(){
+                fetch("/info").then((resp)=>resp.json()).then(function(data){
+                    app.user = data;
+                    fetch("/groups/" + data.room).then((resp1)=>resp1.json()).then(function(data1){
+                        app.group = data1;
+                        app.group.cameras.forEach(function(camera){
+                            var cam = new Camera({_id: camera});
+                            cam.fetch({
+                                success: function(){
+                                    app.cameras.push(cam)
+                                }
+                            });
+
+                        })
+                    }).catch(function(err1){
+                        console.log(err1);
+                    })
+                }).catch(function(err){
+                    console.log(err);
+                }) 
+            }
+
+        })
+    </script>
+</body>
+
+</html>

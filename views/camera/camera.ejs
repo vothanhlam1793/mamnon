@@ -1,0 +1,79 @@
+<html>
+    <% include ../header %>
+    <body>
+        <div id="app" class="container">
+            <h3>Group</h3>
+            <div>
+                <div class="form-group">
+                    <input v-model="url" placeholder="Đường dẫn" class="form-control">
+                    <input v-model="info" placeholder="Thông tin" class="form-control">
+                    <input v-model="title" placeholder="Tiêu đề" class="form-control">
+                    <input v-model="alias" placeholder="Biệt danh" class="form-control">
+                </div>
+                <button @click="create()">Tạo camera mới</button>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Url</th>
+                    <th>Thông tin</th>
+                    <th>Tiêu đề</th>
+                    <th>Biệt danh</th>
+                </tr>
+                <tr v-for="camera in cameras">
+                    <td>{{camera.url}}</td>
+                    <td>{{camera.info}}</td>
+                    <td>{{camera.title}}</td>
+                    <td>{{camera.alias}}</td>
+                </tr>
+            </table>
+        </div>
+        <script>
+    //             url: String,    //link RTSP
+    // title: String,
+    // info: String,
+    // alias: String
+    var Camera = Backbone.Model.extend({
+    urlRoot: "/cameras",
+    idAttribute: "_id"
+})
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    cameras: [],
+                    url: "",
+                    info: "",
+                    title: "",
+                    alias: "",
+                    status: ""
+                },
+                methods: {
+                    create: function(){
+                        var c = new Camera({
+                            url: app.url,
+                            info: app.info,
+                            title: app.title,
+                            alias: app.alias
+                        });
+                        c.save(null, {
+                            success: function(){
+                                app.url = "",
+                                app.title = "",
+                                app.alias = "",
+                                app.info = "",
+                                app.status = "Đã tạo xong camera mới"
+                            }
+                        })
+                    }
+                },
+                created: function(){
+                    fetch("/cameras").then((resp)=>resp.json()).then(function(a){
+                        app.cameras = a;
+                    }).catch (function(e){
+                        console.log(e);
+                    })
+                    
+                }
+            });
+        </script>
+    </body>
+</html>

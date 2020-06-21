@@ -1,0 +1,95 @@
+<html>
+    <% include ../header %>
+    <body>
+        <div id="app">
+            <h3>Group</h3>
+            <p>{{status}}</p>
+            <div>
+                <div class="form-group">
+                    <input v-model="name" placeholder="Tên lớp" class="form-control">
+                    <input v-model="alias" placeholder="Tên lớp" class="form-control">
+                    <textarea v-model="info" placeholder="Nhập thông tin" class="form-control"></textarea>
+                    <div>
+                        <table>
+                            <tr v-for="camera in cameras">
+                                <td>{{camera}}</td>
+                            </tr>
+                        </table>
+                        <select v-model="e_camera" class="form-control">
+                            <option v-for="camera in s_cameras" :value="camera._id">{{camera.title}}</option>
+                        </select>
+                        <button @click="add(e_camera, cameras)">+</button>
+                    </div>
+                </div>
+                <button @click="create()">Tạo lớp mới</button>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Tên</th>
+                    <th>Biệt danh</th>
+                    <th>Thông tin</th>
+                    <th>Camera</th>
+                </tr>
+                <tr v-for="group in groups">
+                    <td>{{group.name}}</td>
+                    <td>{{group.alias}}</td>
+                    <td>{{group.info}}</td>
+                    <td>{{group.cameras}}</td>
+                </tr>
+            </table>
+        </div>
+        <script>
+            var Group = Backbone.Model.extend({
+    urlRoot: "/groups",
+    idAttribute: "_id"
+})
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    groups: [],
+                    name: "",
+                    alias: "",
+                    cameras: [],
+                    info: "",
+                    e_camera: "",
+                    s_cameras: [],
+                    status: "Xin chào ^^"
+                },
+                methods: {
+                    add: function(e, a){
+                        a.push(e);
+                    },
+                    create: function(){
+                        var g = new Group({
+                            name: app.name,
+                            info: app.info,
+                            cameras: app.cameras,
+                            alias: app.alias
+                        });
+                        g.save(null, {
+                            success: function(){
+                                app.status = "Đã tạo thành công"
+                                app.name = "";
+                                app.info = "";
+                                app.cameras = []
+                            }
+                        })
+                    }
+                },
+                created: function(){
+                    fetch("/groups").then((resp)=>resp.json()).then(function(a){
+                        app.groups = a;
+                    }).catch (function(e){
+                        console.log(e);
+                    })
+                    fetch("/cameras").then((resp)=>resp.json()).then(function(a){
+                        app.s_cameras = a;
+                    }).catch (function(e){
+                        console.log(e);
+                    })
+                    
+                }
+            });
+        </script>
+    </body>
+</html>

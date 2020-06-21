@@ -1,0 +1,69 @@
+<div id="sidebar">
+    <h4>PHỤ KIỆN CRETA</h4>
+    <ul class="nav nav-pills nav-stacked">
+        <libar v-for="libar in o_sidebar" :cclass="libar.class" :chref="libar.href" :ccontent="libar.content"></libar>
+    </ul><br>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search Blog..">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>
+</div>
+
+<script>
+    Vue.component('libar', {
+        props: ['cclass', 'ccontent', 'chref'],
+        data: function () {
+            return {
+
+            }
+        },
+        template: `
+            <li :class="cclass"><a :href="chref">{{ccontent}}</a></li>
+        `
+    })
+    var sidebar = new Vue({
+    el: '#sidebar',
+    data: {
+        message: 'Hello Vue!',
+        o_sidebar: [
+            {
+                href: "/manager/la1",
+                content: "Lớp lá 1",
+                class: "active"
+            },
+            {
+                href: "/manager/la2",
+                content: "Lớp lá 2",
+                class: ""
+            },
+            {
+                href: "/manager/mam1",
+                content: "Mầm 1",
+                class: ""
+            },
+            {
+                href: "/manager/mam2",
+                content: "Mầm 2",
+                class: ""
+            },
+        ]
+    },created() {
+  console.log(this.$el);
+},
+mounted() {
+    this.o_sidebar.forEach(function(liba){
+        console.log(liba);
+        if(liba.href == location.pathname){
+            liba.class="active"
+        } else {
+            liba.class=""
+        }
+    })
+    console.log(this.$el);
+}
+    })
+</script>

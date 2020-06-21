@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cameras</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/vue.js"></script>
+    <script src="/javascripts/hls.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+    <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {
+            height: 1500px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-3 sidenav">
+                <!-- <h4>Quản lý - MN Ngọc Hoàng</h4> -->
+                <!-- <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="/manager/la1">Lá 1</a></li>
+                    <li class=""><a href="/manager/la2">Lá 2</a></li>
+                    <li class=""><a href="/manager/mam1">Mầm 1</a></li>
+                    <li class=""><a href="/manager/mam2">Mầm 2</a></li>
+                    <li class=""><a href="/manager/choi1">Chồi</a></li>
+                </ul><br> -->
+                <% include sidebar %>
+            </div>
+
+            <div class="col-sm-9" id="app">
+                <!-- <div>
+                    <button @click="toggle_user()">Thêm user</button>
+                </div> -->
+                <div class="text-center" style="padding: 20px">
+                    <h4>Tạo tên đăng nhập mới</h4>
+                    <div class="form-group">
+                        <input v-model="username" placeholder="Tên đăng nhập" class="form-control">
+                        <input v-model="password" placeholder="Mật khẩu" class="form-control">
+                        <input v-model="re_password" placeholder="Nhập lại mật khẩu" class="form-control">
+                        <input v-model="phone" placeholder="Số điện thoại" class="form-control">
+                        <input v-model="name" placeholder="Tên phụ huynh" class="form-control">
+                        <select v-model="room" class="form-control">
+                            <option v-for="group in groups" :value="group._id">{{group.name}}</option>
+                        </select>
+                    </div>
+                    <button @click="create()">Tạo user</button>
+                </div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Tên</th>
+                            <th>Điện thoại</th>
+                            <th>Username</th>
+                        </tr>
+                        <tr v-for="user in users">
+                            <td>{{user.name}}</td>
+                            <td>{{user.phone}}</td>
+                            <td>{{user.username}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid">
+        <p>TRƯỜNG MẦM NON NGỌC HOÀNG - TRẢNG DÀI - BIÊN HOÀ - ĐỒNG NAI</p>
+    </footer>
+    <script>
+        async function postData(url = '', data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+        var app = new Vue({
+            el: "#app",
+            data: {
+                username: "",
+                password: "",
+                re_password: "",
+                phone: "",
+                name: "",
+                room: "",
+                status: "",
+                groups: [],
+                users: [],
+                toggle: true
+            },
+            methods: {
+                create: function () {
+                    postData("/register", {
+                        username: app.username,
+                        password: app.password,
+                        re_password: app.re_password,
+                        phone: app.phone,
+                        name: app.name,
+                        room: app.room
+                    }).then(function (data) {
+                        console.log(data);
+                    }).catch(function (err) {
+                        console.log(err);
+                    })
+                },
+                toggle_user: function(){
+                    if(app.toggle){
+                        app.toggle = false;
+                    } else {
+                        app.toggle = true;
+                    }
+                }
+            },
+            created: function () {
+                fetch("/groups").then((resp) => resp.json()).then(function (data) {
+                    app.groups = data;
+                }).catch(function (e) {
+                    console.log(e);
+                })
+                console.log(location.pathname);
+                var g = location.pathname.split("/").pop();
+                console.log(g);
+                fetch("/suser/" + g).then((resp) => resp.json()).then(function (data) {
+                    console.log(data);
+                    app.users = data;
+                }).catch(function (e) {
+                    console.log(e);
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>
