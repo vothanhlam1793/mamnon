@@ -53,13 +53,6 @@
     <div class="container-fluid">
         <div class="row content">
             <div class="col-sm-3 sidenav">
-                <!-- <h4>Quản lý - MN Ngọc Hoàng</h4> -->
-                <!-- <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="/manager/la1">Lá 1</a></li>
-                    <li class=""><a href="/manager/la2">Lá 2</a></li>
-                    <li class=""><a href="/manager/mam1">Mầm 1</a></li>
-                    <li class=""><a href="/manager/mam2">Mầm 2</a></li>
-                    <li class=""><a href="/manager/choi1">Chồi</a></li>
                 </ul><br> -->
                 <% include sidebar %>
             </div>
@@ -68,7 +61,7 @@
                 <!-- <div>
                     <button @click="toggle_user()">Thêm user</button>
                 </div> -->
-                <div class="text-center" style="padding: 20px">
+                <div class="text-center" style="padding: 20px; display: none;">
                     <h4>Tạo tên đăng nhập mới</h4>
                     <div class="form-group">
                         <input v-model="username" placeholder="Tên đăng nhập" class="form-control">
@@ -83,16 +76,21 @@
                     <button @click="create()">Tạo user</button>
                 </div>
                 <div>
+                    <!-- <h3>{{groups}}</h3> -->
+                </div>
+                <div>
                     <table class="table">
                         <tr>
                             <th>Tên</th>
                             <th>Điện thoại</th>
                             <th>Username</th>
+                            <th>Điều khiển</th>
                         </tr>
                         <tr v-for="user in users">
                             <td>{{user.name}}</td>
                             <td>{{user.phone}}</td>
                             <td>{{user.username}}</td>
+                            <td><button @click="remove(user)">Xoá</button></td>
                         </tr>
                     </table>
                 </div>
@@ -156,6 +154,19 @@
                     } else {
                         app.toggle = true;
                     }
+                },
+                remove: function(user){
+                    if(confirm("Đây là hành động không phục hồi được đó - chắc chứ?")){
+
+                    } else {
+                        return;
+                    }
+                    postData("/remove",user).then(function(data){
+                        console.log(data);
+                        location.reload(location.pathname);
+                    }).catch(function(err){
+                        console.log(err);
+                    })
                 }
             },
             created: function () {

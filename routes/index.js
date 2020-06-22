@@ -37,9 +37,7 @@ var Camera = router.camera = restful.model('camera', mongoose.Schema({
 Camera.register(router, '/cameras');
 
 router.get('/', function (req, res, next) {
-    res.render('index', {
-        title: 'Creta Solu'
-    });
+    res.render('login');
 });
 
 router.get("/camera", function (req, res, next) {
@@ -154,6 +152,20 @@ router.get("/vcamera", function (req, res, next) {
         });
 })
 
+router.post("/remove", function(req, res){
+    console.log(req.body);
+    User.remove({_id: req.body._id}, function(e, d){
+        if(e){
+            res.send({
+                error: "ok"
+            })
+            return;
+        }
+        res.send({
+            success: "ok"
+        })
+    })
+})
 router.get("/group", function(req, res){
     res.render("group/group");
 })
@@ -186,7 +198,7 @@ router.get('/logout', function (req, res, next) {
             if (err) {
                 return next(err);
             } else {
-                return res.redirect('/');
+                return res.redirect('/login');
             }
         });
     }

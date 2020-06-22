@@ -2,29 +2,23 @@
 
 <% include header %>
 
-<body>
-    <a href="/logout">Đăng xuất</a>
+<body class="container">
     <div class="" id="app">
-        <div>KALA CAMERA</div>
-        <div class="row">
-            <!-- <div class="col-lg-4 col-md-4 well" v-for="id_video in idVideos">
-                <view-camera :id_video="id_video.id" :title_video="id_video.title">
-                </view-camera>
-
-            </div> -->
-            <div class="col-lg-4 col-md-4 well" v-for="camera in cameras">
-                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title">
-                </view-camera>
+        <div class="" style="margin: 20px;">
+            <div class="text-right">
+                <p>Chào {{user.name}}, <a href="/logout">đăng xuất</a></p>
             </div>
         </div>
-        <!-- <div class="form-group">
-            <label for="usr">Chọn camera</label>
-            <select class="form-control" v-model="choice" style="max-width:100%;" v-on:change="change()">
-                <option v-for="uri in uris">{{uri.uri}}</option>
-            </select>
-        </div> -->
-        <div>
-            <button @click="start()">View</button>
+        <div class="text-center" style="margin-bottom: 10px">
+            <button @click="start()" class="btn btn-primary">Bắt đầu xem</button>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 well" v-for="camera in cameras">
+                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title"></view-camera>
+            </div>
+        </div>
+        <div class="text-right">
+            <p><i>TRƯỜNG MẦM NGON NGỌC HOÀNG - TRẢNG DÀI</i></p>
         </div>
     </div>
     <script src="/javascripts/video.js"></script>
@@ -74,7 +68,6 @@
 
                 },
                 start: function(){
-                    // var url = "http://door.creta.work:8888/stream/" + this.choice.split("/")[2] + "/index.m3u8";
                     app.cameras.forEach(function(camera){
                         video_hls(camera.attributes._id, "http://door.creta.work:8888/stream/" + camera.attributes.alias + "/index.m3u8");
                     });
