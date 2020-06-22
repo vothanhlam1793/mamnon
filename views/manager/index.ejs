@@ -44,6 +44,12 @@
             .row.content {
                 height: auto;
             }
+            .cpad {
+                        margin: 20px; 
+                    }
+                    .cpad1 {
+                        padding: 20px; 
+                    }
         }
     </style>
 </head>
@@ -58,17 +64,17 @@
             </div>
 
             <div class="col-sm-9" id="app">
-                <!-- <div>
+                <div>
                     <button @click="toggle_user()">Thêm user</button>
-                </div> -->
-                <div class="text-center" style="padding: 20px; display: none;">
+                </div>
+                <div class="text-center cpad1" :style="toggle">
                     <h4>Tạo tên đăng nhập mới</h4>
                     <div class="form-group">
-                        <input v-model="username" placeholder="Tên đăng nhập" class="form-control">
-                        <input v-model="password" placeholder="Mật khẩu" class="form-control">
-                        <input v-model="re_password" placeholder="Nhập lại mật khẩu" class="form-control">
-                        <input v-model="phone" placeholder="Số điện thoại" class="form-control">
-                        <input v-model="name" placeholder="Tên phụ huynh" class="form-control">
+                        <input v-model="username" placeholder="Tên đăng nhập" class="form-control cpad">
+                        <input v-model="password" placeholder="Mật khẩu" class="form-control cpad">
+                        <input v-model="re_password" placeholder="Nhập lại mật khẩu" class="cpad form-control">
+                        <input v-model="phone" placeholder="Số điện thoại" class="form-control cpad">
+                        <input v-model="name" placeholder="Tên phụ huynh" class="form-control cpad">
                         <select v-model="room" class="form-control">
                             <option v-for="group in groups" :value="group._id">{{group.name}}</option>
                         </select>
@@ -131,7 +137,7 @@
                 status: "",
                 groups: [],
                 users: [],
-                toggle: true
+                toggle: "display: none"
             },
             methods: {
                 create: function () {
@@ -149,10 +155,11 @@
                     })
                 },
                 toggle_user: function(){
-                    if(app.toggle){
-                        app.toggle = false;
+                    console.log("here")
+                    if(app.toggle == "display: none"){
+                        app.toggle = "display: block"
                     } else {
-                        app.toggle = true;
+                        app.toggle = "display: none"
                     }
                 },
                 remove: function(user){
