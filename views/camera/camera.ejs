@@ -18,12 +18,14 @@
                     <th>Thông tin</th>
                     <th>Tiêu đề</th>
                     <th>Biệt danh</th>
+                    <th>Hành động</th>
                 </tr>
                 <tr v-for="camera in cameras">
                     <td>{{camera.url}}</td>
                     <td>{{camera.info}}</td>
                     <td>{{camera.title}}</td>
                     <td>{{camera.alias}}</td>
+                    <td><button @click="remove(camera)">Xoá</button></td>
                 </tr>
             </table>
         </div>
@@ -61,6 +63,26 @@
                                 app.alias = "",
                                 app.info = "",
                                 app.status = "Đã tạo xong camera mới"
+                            }
+                        })
+                    },
+                    remove: function(camera){
+                        console.log(camera);
+                        if(confirm("Chắc chứ?")){
+
+                        } else {
+                            return;
+                        }
+                        var cam = new Camera({_id: camera._id});
+                        cam.fetch({
+                            success: function(){
+                                cam.destroy({
+                                    success: function(){
+                                        location.replace(location.pathname);
+                                    }
+                                });
+                            }, error: function(){
+
                             }
                         })
                     }

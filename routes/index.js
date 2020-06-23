@@ -40,9 +40,9 @@ router.get('/', function (req, res, next) {
     res.render('login');
 });
 
-router.get("/camera", function (req, res, next) {
-    res.render("camera");
-})
+// router.get("/camera", function (req, res, next) {
+//     res.render("camera");
+// })
 
 router.get("/register", function (req, res, next) {
     res.render("register")

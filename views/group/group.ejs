@@ -29,12 +29,14 @@
                     <th>Biệt danh</th>
                     <th>Thông tin</th>
                     <th>Camera</th>
+                    <th>Hành động</th>
                 </tr>
                 <tr v-for="group in groups">
                     <td>{{group.name}}</td>
                     <td>{{group.alias}}</td>
                     <td>{{group.info}}</td>
                     <td>{{group.cameras}}</td>
+                    <td><button @click="remove(group)">Xoá</button></td>
                 </tr>
             </table>
         </div>
@@ -72,6 +74,26 @@
                                 app.name = "";
                                 app.info = "";
                                 app.cameras = []
+                            }
+                        })
+                    },
+                    remove: function(camera){
+                        console.log(camera);
+                        if(confirm("Chắc chứ?")){
+
+                        } else {
+                            return;
+                        }
+                        var cam = new Group({_id: camera._id});
+                        cam.fetch({
+                            success: function(){
+                                cam.destroy({
+                                    success: function(){
+                                        location.replace(location.pathname);
+                                    }
+                                });
+                            }, error: function(){
+
                             }
                         })
                     }
