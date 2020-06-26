@@ -8,7 +8,7 @@ function video_hls(id_video, url_video) {
             video.play();
         });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
+        video.src = url_video;
         video.addEventListener('canplay', function () {
             video.play();
         });
@@ -18,10 +18,15 @@ function video_hls(id_video, url_video) {
     }
 }
 Vue.component("view-camera", {
-    props: ['id_video', 'title_video'],
+    props: ['id_video', 'title_video', 'alias_camera'],
     data: function () {
         return {
 
+        }
+    },
+    methods:{
+        start_camera: function(){
+            console.log("ALIAS:")
         }
     },
     template: `

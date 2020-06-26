@@ -12,9 +12,12 @@
         <div class="text-center" style="margin-bottom: 10px">
             <button @click="start()" class="btn btn-primary">Bắt đầu xem</button>
         </div>
+
+        <!-- Cho xem camera day nha -->
         <div class="row">
             <div class="col-lg-4 col-md-4 well" v-for="camera in cameras">
-                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title"></view-camera>
+                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title" :alias_camera="camera.attributes.alias"></view-camera>
+                <!-- <button @click="start_element(camera.attributes)">Xem</button> -->
             </div>
         </div>
         <div class="text-right">
@@ -71,6 +74,10 @@
                     app.cameras.forEach(function(camera){
                         video_hls(camera.attributes._id, "http://door.creta.work:8888/stream/" + camera.attributes.alias + "/index.m3u8");
                     });
+                },
+                start_element: function(camera){
+                    console.log(camera);
+                    video_hls(camera._id, "http://door.creta.work:8888/stream/" + camera.alias + "/index.m3u8");
                 }
             },
             created: function(){

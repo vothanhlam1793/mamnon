@@ -37,12 +37,25 @@ var Camera = router.camera = restful.model('camera', mongoose.Schema({
 Camera.register(router, '/cameras');
 
 router.get('/', function (req, res, next) {
-    res.render('login');
+    if(req.cookies.userId == undefined){
+        res.render('login');
+        return;
+    }
+    User.findById(req.cookies.userId)
+        .exec(function (error, user) {
+            if (error) {
+                return next(error);
+            } else {
+                if (user === null) {
+                    var err = new Error('Not authorized! Go back!');
+                    err.status = 400;
+                    return next(err);
+                } else {
+                    return res.render("camera");
+                }
+            }
+        });
 });
-
-// router.get("/camera", function (req, res, next) {
-//     res.render("camera");
-// })
 
 router.get("/register", function (req, res, next) {
     res.render("register")
@@ -128,6 +141,7 @@ router.post("/login", function (req, res, next) {
             } else {
                 console.log(user);
                 req.session.userId = user._id;
+                res.cookie('userId', user._id, {maxAge: 23328000000});
                 return res.redirect('/vcamera');
             }
         });
@@ -135,8 +149,12 @@ router.post("/login", function (req, res, next) {
 })
 
 router.get("/vcamera", function (req, res, next) {
-    console.log(req.session.userId);
-    User.findById(req.session.userId)
+    console.log(req.cookies.userId);
+    if(req.cookies.userId == undefined){
+        res.redirect("/login");
+        return;
+    }
+    User.findById(req.cookies.userId)
         .exec(function (error, user) {
             if (error) {
                 return next(error);
@@ -173,8 +191,12 @@ router.get("/ccamera", function(req, res){
     res.render("camera/camera");
 })
 router.get("/info", function(req, res, next){
-    console.log(req.session.userId);
-    User.findById(req.session.userId)
+    console.log(req.cookies.userId);
+    if(req.cookies.userId == undefined){
+        res.redirect("/login");
+        return;
+    }
+    User.findById(req.cookies.userId)
         .exec(function (error, user) {
             if (error) {
                 return next(error);
@@ -192,6 +214,7 @@ router.get("/info", function(req, res, next){
 
 //  Logout
 router.get('/logout', function (req, res, next) {
+    res.clearCookie('userId');
     if (req.session) {
         // delete session object
         req.session.destroy(function (err) {
