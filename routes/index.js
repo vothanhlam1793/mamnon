@@ -140,8 +140,9 @@ router.post("/login", function (req, res, next) {
                 return next(err);
             } else {
                 console.log(user);
-                req.session.userId = user._id;
-                res.cookie('userId', user._id, {maxAge: 23328000000});
+                //req.session.userId = user._id;
+                res.cookie('username', user.username, {maxAge: 23328000000})
+                //res.cookie('userId', user._id, {maxAge: 23328000000});
                 return res.redirect('/vcamera');
             }
         });
@@ -149,16 +150,16 @@ router.post("/login", function (req, res, next) {
 })
 
 router.get("/vcamera", function (req, res, next) {
-    console.log(req.cookies.userId);
-    if(req.cookies.userId == undefined){
+    console.log(req.cookies.username);
+    if(req.cookies.username == undefined){
         res.redirect("/login");
         return;
     }
-    User.findById(req.cookies.userId)
-        .exec(function (error, user) {
-            if (error) {
-                return next(error);
-            } else {
+    User.findOne({"username": req.cookies.username}, function(e,user){
+        if(e){
+            return next(e);
+        } else {
+            console.log("USER:", user);
                 if (user === null) {
                     var err = new Error('Not authorized! Go back!');
                     err.status = 400;
@@ -166,8 +167,8 @@ router.get("/vcamera", function (req, res, next) {
                 } else {
                     return res.render("camera");
                 }
-            }
-        });
+        }
+    })
 })
 
 router.post("/remove", function(req, res){
@@ -191,30 +192,30 @@ router.get("/ccamera", function(req, res){
     res.render("camera/camera");
 })
 router.get("/info", function(req, res, next){
-    console.log(req.cookies.userId);
-    if(req.cookies.userId == undefined){
+    console.log(req.cookies.username);
+    if(req.cookies.username == undefined){
         res.redirect("/login");
         return;
     }
-    User.findById(req.cookies.userId)
-        .exec(function (error, user) {
-            if (error) {
-                return next(error);
+        User.findOne({"username": req.cookies.username}, function(e,user){
+            if(e){
+                return next(e);
             } else {
-                if (user === null) {
-                    var err = new Error('Not authorized! Go back!');
-                    err.status = 400;
-                    return next(err);
-                } else {
-                    return res.send(user);
-                }
+                console.log("USER:", user);
+                    if (user === null) {
+                        var err = new Error('Not authorized! Go back!');
+                        err.status = 400;
+                        return next(err);
+                    } else {
+                        return res.send(user);
+                    }
             }
-        });
+        })
 })
 
 //  Logout
 router.get('/logout', function (req, res, next) {
-    res.clearCookie('userId');
+    res.clearCookie('username');
     if (req.session) {
         // delete session object
         req.session.destroy(function (err) {
