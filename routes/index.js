@@ -4,7 +4,6 @@ var User = require("../model/user");
 var Group = require("../model/group");
 var Camera = require("../model/camera");
 /* GET home page. */
-var restful = require('node-restful');
 var mongoose = restful.mongoose;
 const uri = "mongodb+srv://tal:asrkpvg7@cluster0-dmhml.gcp.mongodb.net/ngochoang?retryWrites=true&w=majority";
 mongoose.connect(uri, {
