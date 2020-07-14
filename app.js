@@ -28,6 +28,8 @@ db.once('open', function () {
 var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
 var userController = require("./controller/user_controller");
+var groupController = require("./controller/group_controller");
+var cameraController = require("./controller/camera_controller");
 var app = express();
 
 // view engine setup
@@ -51,10 +53,12 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/users', userController);
-
+app.use("/cameras", cameraController);
+app.use("/groups", groupController);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+    //res.redirect("/logout");
 });
 
 // error handler

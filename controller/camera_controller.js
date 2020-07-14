@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
-// var ModelHandle = require("../model/post_model");
+var ModelHandle = require("../model/camera");
 // require one model to here
 //Controller
-// router.get("/search", function(req, res){
-//     ModelHandle.find(req.query, function(e,r){
-//         if(e){
-//             res.send([]);
-//             return;
-//         };
-//         res.send(r);
-//     })
-// })
+router.get("/search", function(req, res){
+    ModelHandle.find(req.query, function(e,r){
+        if(e){
+            res.send([]);
+            return;
+        };
+        res.send(r);
+    })
+})
 router.get("/", function(req, res){
     ModelHandle.find({}, function(e,r){
         if(e){

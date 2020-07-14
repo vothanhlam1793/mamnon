@@ -18,30 +18,30 @@ db.once('open', function () {
   // we're connected!
   console.log("DATABASE: ROUTER");
 });
-var Group = router.group = restful.model('group', mongoose.Schema({
-    name: String,
-    info: String,
-    cameras: Array,
-    alias: String
-  }))
-  .methods(['get', 'post', 'put', 'delete']);
+// var Group = router.group = restful.model('group', mongoose.Schema({
+//     name: String,
+//     info: String,
+//     cameras: Array,
+//     alias: String
+//   }))
+//   .methods(['get', 'post', 'put', 'delete']);
  
-Group.register(router, '/groups');
+// Group.register(router, '/groups');
 
-var Camera = router.camera = restful.model('camera', mongoose.Schema({
-    url: String,    //link RTSP
-    title: String,
-    info: String,
-    alias: String
-})).methods(['get', 'post', 'put', 'delete']);
-Camera.register(router, '/cameras');
+// var Camera = router.camera = restful.model('camera', mongoose.Schema({
+//     url: String,    //link RTSP
+//     title: String,
+//     info: String,
+//     alias: String
+// })).methods(['get', 'post', 'put', 'delete']);
+// Camera.register(router, '/cameras');
 
 router.get('/', function (req, res, next) {
-    if(req.cookies.userId == undefined){
+    if(req.cookies.username == undefined){
         res.render('login');
         return;
     }
-    User.findById(req.cookies.userId)
+    User.findById(req.cookies.username)
         .exec(function (error, user) {
             if (error) {
                 return next(error);

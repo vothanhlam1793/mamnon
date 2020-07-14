@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
-var Group = new mongoose.Schema({
+var GroupSchema = new mongoose.Schema({
     name: String,
     info: String,
-    cameras: Array
+    cameras: Array,
+    alias: String
 });
 
-var Group = mongoose.model('Group', CameraSchema);
+var Group = mongoose.model('Group', GroupSchema);
 module.exports = Group;

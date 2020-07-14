@@ -84,7 +84,7 @@
                 fetch("/info").then((resp)=>resp.json()).then(function(data){
                     app.user = data;
                     fetch("/groups/" + data.room).then((resp1)=>resp1.json()).then(function(data1){
-                        app.group = data1;
+                        app.group = data1[0];
                         app.group.cameras.forEach(function(camera){
                             var cam = new Camera({_id: camera});
                             cam.fetch({
