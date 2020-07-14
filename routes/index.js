@@ -4,21 +4,6 @@ var User = require("../model/user");
 var Group = require("../model/group");
 var Camera = require("../model/camera");
 /* GET home page. */
-var mongoose = restful.mongoose;
-const uri = "mongodb+srv://tal:asrkpvg7@cluster0-dmhml.gcp.mongodb.net/ngochoang?retryWrites=true&w=majority";
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-var db = mongoose.connection;
-
-//handle mongo error
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  // we're connected!
-  console.log("DATABASE: ROUTER");
-});
 
 router.get('/', function (req, res, next) {
     if(req.cookies.username == undefined){
