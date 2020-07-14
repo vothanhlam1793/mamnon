@@ -543,9 +543,9 @@ mongoose-legacy-pluralize@1.0.2:
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
 mongoose@^5.9.23:
-  version "5.9.23"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.23.tgz#cb16687fbd19082bbbf0b8fab4778e2e4d85e7b1"
-  integrity sha512-fMYlMRJz0T6Ax2K2P0jt+kxXd4qaRxyfZCha1YBMczmA2EBlT5SnBlcDyJ4YQa4/z+GoDh06uH090w7BfBcdWg==
+  version "5.9.24"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.9.24.tgz#ba7f95529da8fa2160d9b4d708b3fe9856c56636"
+  integrity sha512-uxTLy/ExYmOfKvvbjn1PHbjSJg0SQzff+dW6jbnywtbBcfPRC/3etnG9hPv6KJe/5TFZQGxCyiSezkqa0+iJAQ==
   dependencies:
     bson "^1.1.4"
     kareem "2.3.1"
@@ -630,13 +630,6 @@ node-pre-gyp@0.11.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
-
-node-restful@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/node-restful/-/node-restful-0.2.6.tgz#42ab3adc8c1a5f94ed864799845f8efe311e632e"
-  integrity sha1-Qqs63IwaX5TthkeZhF+O/jEeYy4=
-  dependencies:
-    underscore "1.8.3"
 
 nopt@^4.0.1:
   version "4.0.3"
@@ -1003,11 +996,6 @@ uid-safe@~2.1.5:
   integrity sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==
   dependencies:
     random-bytes "~1.0.0"
-
-underscore@1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
-  integrity sha1-Tz+1OxBuYJf8+ctBCfKl6b36UCI=
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"

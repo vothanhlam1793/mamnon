@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var User = require("../model/user")
+var User = require("../model/user");
+var Group = require("../model/group");
+var Camera = require("../model/camera");
 /* GET home page. */
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
@@ -18,23 +20,6 @@ db.once('open', function () {
   // we're connected!
   console.log("DATABASE: ROUTER");
 });
-// var Group = router.group = restful.model('group', mongoose.Schema({
-//     name: String,
-//     info: String,
-//     cameras: Array,
-//     alias: String
-//   }))
-//   .methods(['get', 'post', 'put', 'delete']);
- 
-// Group.register(router, '/groups');
-
-// var Camera = router.camera = restful.model('camera', mongoose.Schema({
-//     url: String,    //link RTSP
-//     title: String,
-//     info: String,
-//     alias: String
-// })).methods(['get', 'post', 'put', 'delete']);
-// Camera.register(router, '/cameras');
 
 router.get('/', function (req, res, next) {
     if(req.cookies.username == undefined){
@@ -76,8 +61,6 @@ router.post("/register", function (req, res, next) {
             if (error) {
                 return next(error);
             } else {
-                // req.session.userId = user._id;
-                // return res.redirect('/login');
                 res.send({
                     success: "OK"
                 })

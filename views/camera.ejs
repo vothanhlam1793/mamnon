@@ -16,7 +16,7 @@
         <!-- Cho xem camera day nha -->
         <div class="row">
             <div class="col-lg-4 col-md-4 well" v-for="camera in cameras">
-                <view-camera :id_video="camera.attributes._id" :title_video="camera.attributes.title" :alias_camera="camera.attributes.alias"></view-camera>
+                <view-camera :id_video="camera._id" :title_video="camera.title" :alias_camera="camera.alias"></view-camera>
                 <!-- <button @click="start_element(camera.attributes)">Xem</button> -->
             </div>
         </div>
@@ -26,10 +26,6 @@
     </div>
     <script src="/javascripts/video.js"></script>
     <script type="text/javascript">
-        var Camera = Backbone.Model.extend({
-            urlRoot: "/cameras",
-            idAttribute: "_id"
-        })
         var app = new Vue({
             el: '#app',
             data: {
@@ -51,16 +47,6 @@
                 group: {},
                 cameras :[]
             },
-            mounted: function () {
-            },
-            created() {
-                fetch("http://door.creta.work:8888/list").then((res) => {
-                    res.json().then((a) => {
-                        console.log(a);
-                        this.uris = a;
-                    })
-                })
-            },
             methods: {
                 change: function () {
                     var url = "http://door.creta.work:8888/stream/" + this.choice.split("/")[2] +
@@ -72,7 +58,7 @@
                 },
                 start: function(){
                     app.cameras.forEach(function(camera){
-                        video_hls(camera.attributes._id, "http://door.creta.work:8888/stream/" + camera.attributes.alias + "/index.m3u8");
+                        video_hls(camera._id, "http://door.creta.work:8888/stream/" + camera.alias + "/index.m3u8");
                     });
                 },
                 start_element: function(camera){
@@ -86,13 +72,13 @@
                     fetch("/groups/" + data.room).then((resp1)=>resp1.json()).then(function(data1){
                         app.group = data1[0];
                         app.group.cameras.forEach(function(camera){
-                            var cam = new Camera({_id: camera});
-                            cam.fetch({
-                                success: function(){
-                                    app.cameras.push(cam)
+                            $.ajax({
+                                url: "/cameras/" + camera, 
+                                success: function(result){
+                                    console.log(result)
+                                    app.cameras.push(result[0]);
                                 }
-                            });
-
+                            })
                         })
                     }).catch(function(err1){
                         console.log(err1);
