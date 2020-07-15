@@ -10,11 +10,12 @@ router.get('/', function (req, res, next) {
         res.render('login');
         return;
     }
-    User.findById(req.cookies.username)
-        .exec(function (error, user) {
+    User.find({username: req.cookies.username})
+        .exec(function (error, r_user) {
             if (error) {
                 return next(error);
             } else {
+                var user = r_user[0];
                 if (user === null) {
                     var err = new Error('Not authorized! Go back!');
                     err.status = 400;
